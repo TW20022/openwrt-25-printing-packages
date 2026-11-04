@@ -1,6 +1,6 @@
 # openwrt-25-printing-packages
 
-OpenWrt **snapshots（master 分支）** 打印软件包 feed，在 `qualcommax/ipq807x`（aarch64_cortex-a53，GCC 14.4.0 + musl）交叉编译环境中 **20 个包目录全部实测编译通过**，产出 38 个 apk / 69 MB。
+OpenWrt **snapshots（master 分支）** 打印软件包 feed，在 `qualcommax/ipq807x`（aarch64_cortex-a53，GCC 14.4.0 + musl）交叉编译环境中 **20 个包目录全部实测编译通过**，产出 39 个 apk / 70 MB。
 
 > 本仓库由 [`openwrt-24-printing-packages`](https://gitee.com/myiptvjs/openwrt-24-printing-packages) 演进而来。相对于 24.10 版，代码层面的增量集中在 **GCC 14 / Python 3.14 / musl** 三重升级带来的编译失败修复（hplip 的 014~019 号补丁，见第八节）。第四~七节的编译经验、CUPS/HP/Brother 使用说明与 24 版通用，仍然有效。
 
@@ -29,7 +29,7 @@ OpenWrt **snapshots（master 分支）** 打印软件包 feed，在 `qualcommax/
 
 > OpenWrt 25（master）已把包管理器从 opkg 换成 apk，产物是 `.apk` 而不是 `.ipk`；安装命令相应变为 `apk add`。
 
-**包清单（20 个包目录全部编译通过，共 38 个 apk）**
+**包清单（20 个包目录全部编译通过，共 39 个 apk）**
 
 | 包 | 版本 | 说明 |
 |---|---|---|
@@ -51,15 +51,17 @@ OpenWrt **snapshots（master 分支）** 打印软件包 feed，在 `qualcommax/
 | cups-bjnp | 2.0.3-r1 | 佳能 BJNP 打印后端 |
 | brlaser | 6-r1 | Brother 激光打印机驱动 |
 | gutenprint-cups | 5.3.5-r1 | Gutenprint 驱动集合（已关闭 simplified PPD，每个型号只列一条） |
+| foo2zjs | 20260206-r1 | 多品牌 GDI 打印机驱动（HP 1020/1005、Minolta、Samsung、ZJS 等） |
 | splix | 2.0.1-r1 | Samsung SPL 打印机驱动 |
 | liberation-fonts-ttf-* | 2.1.5-r1 | Liberation 字体（12 个 ttf 子包） |
 | python3-dbus | 1.4.0-r2 | hplip 依赖 |
+
+> `foo2zjs` 最初因 `.config` 未勾选而空跑（done 记录存在但无产物），已用 `CONFIG_PACKAGE_foo2zjs=y` + 单独编译补上，现为 `foo2zjs-20260206-r1.apk`。
 
 **本 feed 内但本次未产出 apk 的目录**
 
 | 目录 | 原因 |
 |---|---|
-| `foo2zjs` | 目标 `.config` 中 `CONFIG_PACKAGE_foo2zjs` 未启用；需要在 menuconfig 里勾选后单独编译 |
 | `box86` / `libarmeabi` / `brhl3040cncupswrapper` / `brhl3040cnfilter` | 用于在 ARM 上跑 i386 闭源 filter，需要 32 位 ARM 用户态；ipq807x 为纯 64 位 aarch64，不启用 |
 | `cups-zh` / `tools` | 非 OpenWrt 包，是路由器端脚本与中文模板（见 7.9 / 7.10） |
 
