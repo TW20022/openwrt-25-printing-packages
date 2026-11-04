@@ -1,0 +1,13 @@
+--- a/scan/sane/hpaio.c
++++ b/scan/sane/hpaio.c
+@@ -379,8 +379,8 @@
+    ResetDeviceList(&DeviceList);
+    DevDiscovery(localOnly);
+    *deviceList = (const SANE_Device **)DeviceList;
+-   SANE_Device*** devList;
+-   orblite_get_devices(devList, localOnly);
++   SANE_Device ***devList = NULL;
++   orblite_get_devices((const SANE_Device ***)&devList, localOnly);
+ 
+    return SANE_STATUS_GOOD;
+ }

@@ -1,0 +1,22 @@
+diff --git a/src/libtools/signals.c b/src/libtools/signals.c
+index a995f27..48c34d9 100755
+--- a/src/libtools/signals.c
++++ b/src/libtools/signals.c
+@@ -12,7 +12,7 @@
+ #include <ucontext.h>
+ #include <setjmp.h>
+ #include <sys/mman.h>
+-#ifndef ANDROID
++#if !defined(ANDROID) && defined(__GLIBC__)
+ #include <execinfo.h>
+ #endif
+ 
+@@ -1071,7 +1071,7 @@ exit(-1);
+             printf_log(log_minimum, " x86opcode=%02X %02X %02X %02X %02X %02X %02X %02X\n", ((uint8_t*)x86pc)[0], ((uint8_t*)x86pc)[1], ((uint8_t*)x86pc)[2], ((uint8_t*)x86pc)[3], ((uint8_t*)x86pc)[4], ((uint8_t*)x86pc)[5], ((uint8_t*)x86pc)[6], ((uint8_t*)x86pc)[7]);
+         else
+             printf_log(log_minimum, "\n");
+-#ifndef ANDROID
++#if !defined(ANDROID) && defined(__GLIBC__)
+         if(box86_showbt && (log_minimum<=box86_log)) {
+             int nptrs;
+             void *buffer[200];

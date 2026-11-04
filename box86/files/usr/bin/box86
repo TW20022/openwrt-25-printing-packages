@@ -1,0 +1,7 @@
+#!/bin/sh
+# box86 wrapper: 32-bit armhf emulator running under AArch32 compat layer.
+# BOX86_LD_LIBRARY_PATH points to the bundled i386 glibc used to resolve
+# symbols of the emulated x86 programs (e.g. Brother HL-3040CN filter).
+BOX86_LD_LIBRARY_PATH=/opt/i386/lib${BOX86_LD_LIBRARY_PATH:+:$BOX86_LD_LIBRARY_PATH}
+export BOX86_LD_LIBRARY_PATH
+exec /opt/armhf/bin/box86 "$@"

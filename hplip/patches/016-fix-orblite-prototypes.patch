@@ -1,0 +1,30 @@
+--- a/scan/sane/hpaio.c
++++ b/scan/sane/hpaio.c
+@@ -51,6 +51,7 @@
+ #include "escl.h"
+ #include "io.h"
+ #include "orblitei.h"
++#include "orblite.h"
+ 
+ 
+ #define DEBUG_DECLARE_ONLY
+@@ -427,7 +428,8 @@
+     if (strcmp(*((char **)handle), "ESCL") == 0)
+        return escl_close(handle);
+     if (strcmp(*((char **)handle), "ORBLITE") == 0)
+-       return orblite_close(handle);
++       orblite_close(handle);
++       return;
+ }  /* sane_hpaio_close() */
+ 
+ extern const SANE_Option_Descriptor * sane_hpaio_get_option_descriptor(SANE_Handle handle, SANE_Int option)
+@@ -560,7 +562,8 @@
+     if (strcmp(*((char **)handle), "ESCL") == 0)
+        return escl_cancel(handle);
+     if (strcmp(*((char **)handle), "ORBLITE") == 0)
+-       return orblite_cancel(handle);
++       orblite_cancel(handle);
++       return;
+ }  /* sane_hpaio_cancel() */
+ 
+ extern SANE_Status sane_hpaio_set_io_mode(SANE_Handle handle, SANE_Bool nonBlocking)

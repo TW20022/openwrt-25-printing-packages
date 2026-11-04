@@ -1,0 +1,3 @@
+#!/bin/sh
+# Brother HL-3040CN filter is a closed-source i386 binary; run it through box86.
+exec /usr/bin/box86 /opt/brother/Printers/hl3040cn/brhl3040cnfilter.bin "$@"

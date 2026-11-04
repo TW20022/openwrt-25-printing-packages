@@ -1,0 +1,14 @@
+--- a/protocol/hp_ipp.h
++++ b/protocol/hp_ipp.h
+@@ -149,6 +149,11 @@
+ 
+ 
+ http_t*    acquireCupsInstance();
++void _releaseCupsInstance(void);
++int addCupsPrinter(char *name, char *device_uri, char *location, char *ppd_file, char *model, char *info);
++int delCupsPrinter(char *pr_name);
++int setDefaultCupsPrinter(char *pr_name);
++int controlCupsPrinter(char *pr_name, int op);
+ const char *getCupsErrorString(int status);
+ void freePrinterList(printer_t *list);
+  

@@ -1,0 +1,28 @@
+--- a/icc2ps/Makefile	2024-04-27 16:48:56.000000000 +0800
++++ b/icc2ps/Makefile	2025-08-02 19:13:15.649432926 +0800
+@@ -1,12 +1,14 @@
+ UNAME := $(shell uname)
+ 
+-PREFIX=	/usr
++
+ PREFIX=	$(DESTDIR)/usr
+ BIN=	$(PREFIX)/bin
+ MANDIR=$(PREFIX)/share/man
+ 
+ SRC=	icc2ps.c xgetopt.c
+-LIB=	-llcms
++LIB=	cmscam97.c cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
++	cmslut.c cmsmatsh.c cmsmtrx.c cmsnamed.c cmspack.c cmspcs.c cmsps2.c \
++	cmssamp.c cmswtpnt.c cmsxform.c cmsio0.c cmsvirt.c
+ CFLAGS+=	-O3
+ 
+ # _XOPEN_SOURCE is required for swab() but undefines strcasecmp(), so add _GNU_SOURCE as well:
+@@ -23,7 +25,7 @@
+ all: foo2zjs-icc2ps man
+ 
+ foo2zjs-icc2ps: $(SRC) $(LIB)
+-	$(CC) $(CPPFLAGS) $(CFLAGS) $(SRC) $(LIB) -lm -o $@ $(LDFLAGS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(SRC) $(LIB) -lm $(LDFLAGS) -o $@
+ 
+ install: all
+ 	$(INSTALL) -c foo2zjs-icc2ps $(BIN)

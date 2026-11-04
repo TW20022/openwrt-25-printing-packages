@@ -1,0 +1,44 @@
+diff --git a/src/emu/x86run.c b/src/emu/x86run.c
+index 898c5c1..de344ea 100755
+--- a/src/emu/x86run.c
++++ b/src/emu/x86run.c
+@@ -1049,7 +1049,7 @@ x86emurun:
+                 emu->error |= ERR_UNIMPL;
+             }
+             GET_ED;
+-            emu->segs[_ES] = *(__uint16_t*)(((char*)ED)+4);
++            emu->segs[_ES] = *(uint16_t*)(((char*)ED)+4);
+             emu->segs_serial[_ES] = 0;
+             GD.dword[0] = *(uint32_t*)ED;
+             break;
+@@ -1062,7 +1062,7 @@ x86emurun:
+                 emu->error |= ERR_UNIMPL;
+             }
+             GET_ED;
+-            emu->segs[_DS] = *(__uint16_t*)(((char*)ED)+4);
++            emu->segs[_DS] = *(uint16_t*)(((char*)ED)+4);
+             emu->segs_serial[_DS] = 0;
+             GD.dword[0] = *(uint32_t*)ED;
+             break;
+diff --git a/src/include/signals.h b/src/include/signals.h
+index da5cc04..4da2365 100755
+--- a/src/include/signals.h
++++ b/src/include/signals.h
+@@ -7,7 +7,7 @@ typedef void (*sighandler_t)(int);
+ 
+ typedef struct x86_sigaction_s {
+ 	union {
+-	  __sighandler_t _sa_handler;
++	  sighandler_t _sa_handler;
+ 	  void (*_sa_sigaction)(int, siginfo_t *, void *);
+ 	} _u;
+ 	sigset_t sa_mask;
+@@ -17,7 +17,7 @@ typedef struct x86_sigaction_s {
+ 
+ typedef struct x86_sigaction_restorer_s {
+ 	union {
+-	  __sighandler_t _sa_handler;
++	  sighandler_t _sa_handler;
+ 	  void (*_sa_sigaction)(int, siginfo_t *, void *);
+ 	} _u;
+ 	uint32_t sa_flags;

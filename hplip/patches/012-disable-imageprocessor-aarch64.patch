@@ -1,0 +1,28 @@
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -597,8 +597,8 @@
+ 	prnt/hpcups/genJPEGStrips.cpp prnt/hpcups/RunLenEncoding.cpp \
+ 	prnt/hpcups/ImageProcessor.h
+ 
+-hpcups_CXXFLAGS = $(APDK_ENDIAN_FLAG) $(DBUS_CFLAGS)
+-hpcups_LDADD = -L./prnt/hpcups/ -ljpeg -ldl -lImageProcessor -lcups -lcupsimage -lz $(DBUS_LIBS)
++hpcups_CXXFLAGS = $(APDK_ENDIAN_FLAG) $(DBUS_CFLAGS) -DDISABLE_IMAGEPROCESSOR
++hpcups_LDADD = -L./prnt/hpcups/ -ljpeg -ldl -lcups -lcupsimage -lz $(DBUS_LIBS)
+ #else
+ #hpcupsdir = $(cupsfilterdir)
+ #hpcups_PROGRAMS = hpcups
+@@ -696,12 +696,12 @@
+ 
+ install-data-hook:
+ if HPLIP_BUILD
+-	if [ \( \( "$(UNAME)" = "x86_64" -o "$(UNAME)" = "aarch64" \) -a  -d "$(DESTDIR)$(libdir)/" \) ]; then \
++	if false; then \
+ 		cp prnt/hpcups/libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/ ; \
+ 		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_64.so ; \
+ 		ln -sf libImageProcessor-x86_64.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \
+ 	fi; \
+-	if [ \( \( "$(UNAME)" = "i686" -o "$(UNAME)" = "i386" \) -a -d "$(DESTDIR)$(libdir)/" \) ]; then \
++	if false; then \
+ 		cp prnt/hpcups/libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/ ; \
+ 		chmod 775 $(DESTDIR)$(libdir)/libImageProcessor-x86_32.so ; \
+ 		ln -sf libImageProcessor-x86_32.so $(DESTDIR)$(libdir)/libImageProcessor.so ; \

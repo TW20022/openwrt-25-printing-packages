@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b0268b3..da9c247 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -188,8 +188,8 @@ elseif(RK3588)
+     set(CMAKE_ASM_FLAGS  "-pipe -mcpu=cortex-a76.cortex-a55+crypto -mfpu=neon-fp-armv8 -mfloat-abi=hard")
+ elseif(ARM64)
+     add_definitions(-DARM64)
+-    add_definitions(-pipe -march=armv8-a+crc+simd+crypto -mfpu=neon-fp-armv8 -mfloat-abi=hard)
+-    set(CMAKE_ASM_FLAGS  "-pipe -march=armv8-a+crc+simd+crypto -mfpu=neon-fp-armv8 -mfloat-abi=hard")
++    add_definitions(-marm -pipe -march=armv8-a+crc+simd -mfpu=neon-fp-armv8 -mfloat-abi=hard)
++    set(CMAKE_ASM_FLAGS  "-marm -pipe -march=armv8-a+crc+simd -mfpu=neon-fp-armv8 -mfloat-abi=hard")
+ elseif(ODROIDN2)
+     add_definitions(-DODROIDN2)
+     add_definitions(-pipe -march=armv8-a+crc+simd+crypto -mcpu=cortex-a73.cortex-a53+crypto -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard)

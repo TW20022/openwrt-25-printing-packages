@@ -1,0 +1,20 @@
+--- a/scan/sane/bb_ledm.c
++++ b/scan/sane/bb_ledm.c
+@@ -26,6 +26,7 @@
+ # include "http.h"
+ # include "xml.h"
+ # include <stdlib.h>
++# include <unistd.h>
+ 
+ # include <stdint.h>
+ 
+--- a/scan/sane/http.c
++++ b/scan/sane/http.c
+@@ -33,6 +33,7 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <unistd.h>
+ #include <string.h>
+ #include <syslog.h>
+ #include <ctype.h>
