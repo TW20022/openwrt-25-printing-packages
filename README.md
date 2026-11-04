@@ -1,4 +1,4 @@
-# openwrt25-printing-packages
+# openwrt-25-printing-packages
 
 OpenWrt **snapshots（master 分支）** 打印软件包 feed，在 `qualcommax/ipq807x`（aarch64_cortex-a53，GCC 14.4.0 + musl）交叉编译环境中 **20 个包目录全部实测编译通过**，产出 38 个 apk / 69 MB。
 
@@ -90,9 +90,9 @@ cd openwrt
 ```bash
 cp feeds.conf.default feeds.conf
 # 方式 A：本仓库为本地目录（推荐，改动即时生效）
-sed -i '1i src-cpy printing /path/to/openwrt25-printing-packages' feeds.conf
+sed -i '1i src-cpy printing /path/to/openwrt-25-printing-packages' feeds.conf
 # 方式 B：直接引用 git 仓库
-# sed -i '1i src-git printing https://gitee.com/<你的账号>/openwrt25-printing-packages.git' feeds.conf
+# sed -i '1i src-git printing https://gitee.com/<你的账号>/openwrt-25-printing-packages.git' feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 ```
@@ -152,7 +152,7 @@ make -j2 target/linux/compile V=s    # 内核（hplip 的 python 扩展需要 st
 make -j2 package/kernel/linux/compile V=s
 
 # 批量编译整个打印组（目标按包目录名，不能按子包名）
-for d in /path/to/openwrt25-printing-packages/*/; do
+for d in /path/to/openwrt-25-printing-packages/*/; do
   n=$(basename "$d")
   [ -f "$d/Makefile" ] && echo "package/feeds/printing/$n/compile"
 done | xargs -r make -j1 V=s
