@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cups
 PKG_VERSION:=2.4.20
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.gz
 PKG_SOURCE_URL:=https://github.com/OpenPrinting/cups/releases/download/v$(PKG_VERSION)/
@@ -146,6 +146,11 @@ define Build/Compile
 	$(SED) '/Order allow,deny/a\  Allow from all' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
 	$(SED) 's,localhost:631,631,g' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
 	$(SED) 's,^ErrorPolicy.*,ErrorPolicy abort-job,g' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
+	# CUPS 2.4 默认强制加密 /admin（浏览器 426 重定向到自签 https）；
+	# 显式关掉，网页管理走普通 http://IP:631/admin。
+	$(SED) '1i\DefaultEncryption Never' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
+	$(SED) '/^[[:space:]]*Encryption[[:space:]]*Required/d' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
+	$(SED) 's,^[[:space:]]*DefaultEncryption.*,DefaultEncryption Never,' $(PKG_INSTALL_DIR)/etc/cups/cupsd.conf
 endef
 
 define Package/cups/install
@@ -163,6 +168,10 @@ define Package/cups/install
 	$(INSTALL_DIR) $(1)/usr/share/cups/templates 
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/cups/templates/*.tmpl \
 		$(1)/usr/share/cups/templates/
+	# 编译期内置中文界面：只覆盖同名模板，无需事后 install.sh
+	$(CP) ./files/zh-cn/templates/*.tmpl $(1)/usr/share/cups/templates/
+	$(SED) 's,__CUPS_VERSION__,$(PKG_VERSION),g' $(1)/usr/share/cups/templates/*.tmpl
+	$(SED) 's,class="header",class="cups-header",g; s,class="body",class="cups-body",g' $(1)/usr/share/cups/templates/*.tmpl
 	$(INSTALL_DIR) $(1)/usr/share/cups/mime
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/cups/mime/* $(1)/usr/share/cups/mime/
 	$(INSTALL_DIR) $(1)/usr/share/cups/usb
@@ -175,6 +184,10 @@ define Package/cups/install
 	$(INSTALL_DIR) $(1)/usr/share/doc/cups
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/doc/cups/*.*html \
 		$(1)/usr/share/doc/cups/
+	# 中文首页（OpenWrt doc-root 在 /usr/share/doc/cups）
+	$(CP) ./files/zh-cn/index.html $(1)/usr/share/doc/cups/index.html
+	$(SED) 's,__CUPS_VERSION__,$(PKG_VERSION),g' $(1)/usr/share/doc/cups/index.html
+	$(SED) 's,class="header",class="cups-header",g; s,class="body",class="cups-body",g' $(1)/usr/share/doc/cups/index.html
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/doc/cups/*.css \
 		$(1)/usr/share/doc/cups/
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/doc/cups/*.txt \
